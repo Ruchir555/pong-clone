@@ -28,7 +28,7 @@ def main():
     pygame.display.set_caption("Pong Tennis")
     clock = pygame.time.Clock()
     pygame.mixer.init()
-    pygame.mixer.music.load("assets/sounds/tetris_theme.mid")
+    pygame.mixer.music.load("assets/sounds/Jackfruit_song.mp3")   #tetris_theme.mid
     pygame.mixer.music.set_volume(0.3)  # Optional: set background volume
     pygame.mixer.music.play(-1)         # Loop forever
 
