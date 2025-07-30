@@ -29,14 +29,14 @@ def main():
     hit_sound = pygame.mixer.Sound("assets/sounds/hit.wav")
     player_win_point_sound = pygame.mixer.Sound("assets/sounds/player_win_point.wav")
     player_lose_point_sound = pygame.mixer.Sound("assets/sounds/player_lose_point.wav")
-    game_win_sound = pygame.mixer.Sound("assets/sounds/game_win.wav")
+    game_win_sound = pygame.mixer.Sound("assets/sounds/game_win_1.wav")   #game_win, game_win_1
 
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Pong Tennis")
     clock = pygame.time.Clock()
     pygame.mixer.init()
-    pygame.mixer.music.load("assets/sounds/Jackfruit_song.mp3")   #tetris_theme.mid
+    pygame.mixer.music.load("assets/sounds/tetris_theme.mid")   #tetris_theme.mid, Jackfruit_song.mp3
     pygame.mixer.music.set_volume(0.3)  # Optional: set background volume
     pygame.mixer.music.play(-1)         # Loop forever
 
