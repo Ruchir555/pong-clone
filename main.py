@@ -25,8 +25,12 @@ def draw_net(screen):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("NES Tennis Clone")
+    pygame.display.set_caption("Pong Tennis")
     clock = pygame.time.Clock()
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/sounds/tetris_theme.mid")
+    pygame.mixer.music.set_volume(0.3)  # Optional: set background volume
+    pygame.mixer.music.play(-1)         # Loop forever
 
     # Create player paddle
     paddle = Player(x=SCREEN_WIDTH//2 - 40, y=SCREEN_HEIGHT - 40, width=80, height=10, speed=PLAYER_SPEED)
