@@ -24,6 +24,14 @@ def draw_net(screen):
 
 def main():
     pygame.init()
+
+    # Load sounds
+    hit_sound = pygame.mixer.Sound("assets/sounds/hit.wav")
+    player_win_point_sound = pygame.mixer.Sound("assets/sounds/player_win_point.wav")
+    player_lose_point_sound = pygame.mixer.Sound("assets/sounds/player_lose_point.wav")
+    game_win_sound = pygame.mixer.Sound("assets/sounds/game_win.wav")
+
+
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Pong Tennis")
     clock = pygame.time.Clock()
@@ -43,7 +51,8 @@ def main():
     ball_held = True  # Waiting for serve
 
     # Create score:
-    score = Score()
+    # score = Score()
+    score = Score(win_sound=player_win_point_sound, lose_sound=player_lose_point_sound, game_win_sound=game_win_sound)
 
 
 
@@ -87,6 +96,7 @@ def main():
         # CPU misses → point to player
         if ball.y + ball.radius < 0:
             print("Player scores!")
+            player_win_point_sound.play()
             score.point_to_player()
             ball = Ball(x=SCREEN_WIDTH//2, y=SCREEN_HEIGHT//2, radius=8, speed_x=BALL_SPEED_X, speed_y=BALL_SPEED_Y)
             ball_held = True
@@ -94,13 +104,14 @@ def main():
         # Player misses → point to CPU
         elif ball.y - ball.radius > SCREEN_HEIGHT:
             print("CPU scores!")
+            player_lose_point_sound.play()
             score.point_to_cpu()
             ball = Ball(x=SCREEN_WIDTH//2, y=SCREEN_HEIGHT//2, radius=8, speed_x=BALL_SPEED_X, speed_y=BALL_SPEED_Y)
             ball_held = True
         else:
             # Then: check collisions
-            ball.check_collision(paddle.rect)
-            ball.check_collision(cpu.rect)
+            ball.check_collision(paddle.rect, hit_sound)
+            ball.check_collision(cpu.rect, hit_sound)
 
         screen.fill((0, 128, 0))  # Court background
         draw_net(screen)          # Center net

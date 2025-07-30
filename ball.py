@@ -36,11 +36,13 @@ class Ball:
         #     self.speed_y *= -1
 
 
-    def check_collision(self, paddle_rect):
+    def check_collision(self, paddle_rect, hit_sound=None):
         ball_rect = pygame.Rect(self.x - self.radius, self.y - self.radius,
                                 self.radius * 2, self.radius * 2)
 
         if ball_rect.colliderect(paddle_rect):
+            if hit_sound:
+                hit_sound.play()
             # Only bounce if the ball is moving toward the paddle
             if self.speed_y > 0 and self.y < paddle_rect.centery:
                 # Ball is moving down (player paddle)
