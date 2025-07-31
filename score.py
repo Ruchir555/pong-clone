@@ -56,7 +56,28 @@ class Score:
         self.player_points = 0
         self.cpu_points = 0
 
+    # def draw(self, screen):
+    #     if self.player_points >= 3 and self.cpu_points >= 3:
+    #         if self.player_points == self.cpu_points:
+    #             point_display = "Deuce"
+    #         elif self.player_points > self.cpu_points:
+    #             point_display = "Adv Player"
+    #         else:
+    #             point_display = "Adv CPU"
+    #     else:
+    #         player_score = POINTS[min(self.player_points, 3)]
+    #         cpu_score = POINTS[min(self.cpu_points, 3)]
+    #         point_display = f"Player: {player_score}   CPU: {cpu_score}"
+
+    #     label = self.font.render(point_display, True, (255, 255, 255))
+    #     games = f"Games - Player: {self.player_games}  CPU: {self.cpu_games}"
+    #     games_label = self.font.render(games, True, (255, 255, 255))
+
+    #     screen.blit(label, (SCREEN_WIDTH // 2 - label.get_width() // 2, 20))
+    #     screen.blit(games_label, (SCREEN_WIDTH // 2 - games_label.get_width() // 2, 60))
+
     def draw(self, screen):
+        # Points display logic
         if self.player_points >= 3 and self.cpu_points >= 3:
             if self.player_points == self.cpu_points:
                 point_display = "Deuce"
@@ -73,5 +94,6 @@ class Score:
         games = f"Games - Player: {self.player_games}  CPU: {self.cpu_games}"
         games_label = self.font.render(games, True, (255, 255, 255))
 
-        screen.blit(label, (SCREEN_WIDTH // 2 - label.get_width() // 2, 20))
-        screen.blit(games_label, (SCREEN_WIDTH // 2 - games_label.get_width() // 2, 60))
+        # Updated Y-positions: move to top margin
+        screen.blit(label, (SCREEN_WIDTH // 2 - label.get_width() // 2, 10))
+        screen.blit(games_label, (SCREEN_WIDTH // 2 - games_label.get_width() // 2, 40))

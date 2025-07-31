@@ -6,6 +6,7 @@ from ball import Ball
 from score import Score
 # from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, BALL_SPEED_X, BALL_SPEED_Y, CPU_SPEED, PLAYER_SPEED
 from config import *
+from court_appearance import *
 
 # # Constants
 # SCREEN_WIDTH = 640
@@ -20,6 +21,41 @@ def draw_net(screen):
 
     for x in range(0, SCREEN_WIDTH, net_width + gap):
         pygame.draw.rect(screen, (255, 255, 255), (x, y, net_width, net_height))
+
+def draw_court(screen):
+    court_green = (94, 156, 85)
+    line_white = (255, 255, 255)
+    screen.fill(court_green)
+
+    margin_x = 20
+    margin_y = 40
+    court_width = SCREEN_WIDTH - 2 * margin_x
+    court_height = SCREEN_HEIGHT - 2 * margin_y
+
+    # Outer rectangle
+    pygame.draw.rect(screen, line_white, (margin_x, margin_y, court_width, court_height), 3)
+
+    # Horizontal service lines
+    service_y1 = margin_y + court_height // 4
+    service_y2 = margin_y + 3 * court_height // 4
+    pygame.draw.line(screen, line_white, (margin_x, service_y1), (margin_x + court_width, service_y1), 2)
+    pygame.draw.line(screen, line_white, (margin_x, service_y2), (margin_x + court_width, service_y2), 2)
+
+    # Center service line
+    center_x = margin_x + court_width // 2
+    pygame.draw.line(screen, line_white, (center_x, service_y1), (center_x, service_y2), 2)
+
+    # Net (dashed)
+    net_y = margin_y + court_height // 2
+    for x in range(margin_x, margin_x + court_width, 20):
+        pygame.draw.line(screen, line_white, (x, net_y), (x + 10, net_y), 2)
+
+    # Center marks on baselines
+    pygame.draw.line(screen, line_white, (center_x, margin_y),
+                     (center_x, margin_y + 5), 2)
+    pygame.draw.line(screen, line_white, (center_x, margin_y + court_height),
+                     (center_x, margin_y + court_height - 5), 2)
+
 
 
 def main():
@@ -36,7 +72,7 @@ def main():
     pygame.display.set_caption("Pong Tennis")
     clock = pygame.time.Clock()
     pygame.mixer.init()
-    pygame.mixer.music.load("assets/sounds/tetris_theme.mid")   #tetris_theme.mid, Jackfruit_song.mp3
+    pygame.mixer.music.load("assets/sounds/Jackfruit_song.mp3")   #tetris_theme.mid, Jackfruit_song.mp3
     pygame.mixer.music.set_volume(0.3)  # Optional: set background volume
     pygame.mixer.music.play(-1)         # Loop forever
 
@@ -113,8 +149,13 @@ def main():
             ball.check_collision(paddle.rect, hit_sound)
             ball.check_collision(cpu.rect, hit_sound)
 
-        screen.fill((0, 128, 0))  # Court background
-        draw_net(screen)          # Center net
+        # Draw the court
+        # screen.fill((0, 128, 0))  # Court background
+        # draw_net(screen)          # Center net
+        # draw_court(screen)
+        draw_realistic_tennis_court(screen)
+
+
         paddle.draw(screen)
         cpu.draw(screen)
         ball.draw(screen)
