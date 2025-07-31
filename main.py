@@ -11,16 +11,21 @@ from court_appearance import *
 def show_difficulty_menu(screen):
     font = pygame.font.SysFont("Courier", 28)
     title = font.render("Select Difficulty", True, (255, 255, 255))
-    options = ["Easy", "Medium", "Hard"]
+    options = ["Easy", "Medium", "Hard", "Toggle Music"]
     selected = 0
+
+    global music_enabled
 
     while True:
         screen.fill((0, 0, 0))
         screen.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, 100))
 
         for i, option in enumerate(options):
+            label_text = option
+            if option == "Toggle Music":
+                label_text = "Music: ON" if music_enabled else "Music: OFF"
             color = (255, 255, 0) if i == selected else (255, 255, 255)
-            label = font.render(option, True, color)
+            label = pygame.font.SysFont("Courier", 28).render(label_text, True, color)
             screen.blit(label, (SCREEN_WIDTH // 2 - label.get_width() // 2, 200 + i * 40))
 
         pygame.display.flip()
@@ -35,12 +40,21 @@ def show_difficulty_menu(screen):
                 elif event.key == pygame.K_DOWN:
                     selected = (selected + 1) % len(options)
                 elif event.key == pygame.K_RETURN:
-                    return options[selected].lower()
+                    if options[selected] == "Toggle Music":
+                        music_enabled = not music_enabled
+                        if music_enabled:
+                            pygame.mixer.music.play(-1)
+                        else:
+                            pygame.mixer.music.stop()
+                    else:
+                        return options[selected].lower()
 
 def show_pause_menu(screen):
     font = pygame.font.SysFont("Courier", 32)
-    options = ["Back to Game", "Exit to Menu"]
+    options = ["Back to Game", "Exit to Menu", "Toggle Music"]
     selected = 0
+
+    global music_enabled
 
     overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
     overlay.set_alpha(180)
@@ -50,8 +64,11 @@ def show_pause_menu(screen):
         screen.blit(overlay, (0, 0))
 
         for i, option in enumerate(options):
+            label_text = option
+            if option == "Toggle Music":
+                label_text = "Music: ON" if music_enabled else "Music: OFF"
             color = (255, 255, 0) if i == selected else (255, 255, 255)
-            label = font.render(option, True, color)
+            label = font.render(label_text, True, color)
             screen.blit(label, (SCREEN_WIDTH // 2 - label.get_width() // 2, 200 + i * 50))
 
         pygame.display.flip()
@@ -66,12 +83,21 @@ def show_pause_menu(screen):
                 elif event.key == pygame.K_DOWN:
                     selected = (selected + 1) % len(options)
                 elif event.key == pygame.K_RETURN:
-                    return options[selected]
+                    if options[selected] == "Back to Game" or options[selected] == "Exit to Menu":
+                        return options[selected]
+                    elif options[selected] == "Toggle Music":
+                        music_enabled = not music_enabled
+                        if music_enabled:
+                            pygame.mixer.music.play(-1)
+                        else:
+                            pygame.mixer.music.stop()
 
 def main():
     pygame.init()
 
-    # Load sounds
+    global music_enabled
+    music_enabled = True
+
     hit_sound = pygame.mixer.Sound("assets/sounds/hit.wav")
     player_win_point_sound = pygame.mixer.Sound("assets/sounds/player_win_point.wav")
     player_lose_point_sound = pygame.mixer.Sound("assets/sounds/player_lose_point.wav")
@@ -88,23 +114,23 @@ def main():
     selected_song = songs_dict["tetris"]
     pygame.mixer.music.load(f"assets/sounds/{selected_song}")
     pygame.mixer.music.set_volume(0.3)
-    pygame.mixer.music.play(-1)
+    if music_enabled:
+        pygame.mixer.music.play(-1)
 
     while True:
-        # Select difficulty
         difficulty = show_difficulty_menu(screen)
         if difficulty == "easy":
-            cpu_speed = CPU_SPEED_EASY
-            ball_speed_x = BALL_SPEED_X_EASY
-            ball_speed_y = BALL_SPEED_Y_EASY
+            cpu_speed = 3
+            ball_speed_x = 2
+            ball_speed_y = 2
         elif difficulty == "hard":
-            cpu_speed = CPU_SPEED_HARD
-            ball_speed_x = BALL_SPEED_X_HARD
-            ball_speed_y = BALL_SPEED_Y_HARD
-        else:  # medium
-            cpu_speed = CPU_SPEED
-            ball_speed_x = BALL_SPEED_X
-            ball_speed_y = BALL_SPEED_Y
+            cpu_speed = 6
+            ball_speed_x = 4
+            ball_speed_y = 4
+        else:
+            cpu_speed = 4
+            ball_speed_x = 3
+            ball_speed_y = 3
 
         paddle = Player(x=SCREEN_WIDTH//2 - 40, y=SCREEN_HEIGHT - 40, width=80, height=10, speed=PLAYER_SPEED)
         cpu = Player(x=SCREEN_WIDTH // 2 - 40, y=40, width=80, height=10, speed=cpu_speed)
@@ -112,7 +138,7 @@ def main():
         score = Score(win_sound=player_win_point_sound, lose_sound=player_lose_point_sound, game_win_sound=game_win_sound)
 
         ball_held = True
-        server = "player"  # Initial server
+        server = "player"
         cpu_serve_delay_timer = 0
         cpu_serve_ready = False
         in_game = True
