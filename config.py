@@ -4,17 +4,17 @@ SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 FPS = 60
 
+# Easy difficulty settings
+BALL_SPEED_X_EASY = 4.0
+BALL_SPEED_Y_EASY = 4.0
+CPU_SPEED_EASY = 2.5
+PLAYER_SPEED_EASY = 3.5
+
 # Normal game settings
 BALL_SPEED_X = 4.2
 BALL_SPEED_Y = 4.2
 CPU_SPEED = 3.5
 PLAYER_SPEED = 3.5
-
-# Easy difficulty settings
-BALL_SPEED_X_EASY = 3.5
-BALL_SPEED_Y_EASY = 3.5
-CPU_SPEED_EASY = 2.5
-PLAYER_SPEED_EASY = 3.5
 
 # Hard difficulty settings
 BALL_SPEED_X_HARD = 4.7

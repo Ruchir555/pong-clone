@@ -120,17 +120,17 @@ def main():
     while True:
         difficulty = show_difficulty_menu(screen)
         if difficulty == "easy":
-            cpu_speed = 3
-            ball_speed_x = 2
-            ball_speed_y = 2
+            cpu_speed = CPU_SPEED_EASY
+            ball_speed_x = BALL_SPEED_X_EASY
+            ball_speed_y = BALL_SPEED_Y_EASY
         elif difficulty == "hard":
-            cpu_speed = 6
-            ball_speed_x = 4
-            ball_speed_y = 4
+            cpu_speed = CPU_SPEED_HARD
+            ball_speed_x = BALL_SPEED_X_HARD
+            ball_speed_y = BALL_SPEED_Y_HARD
         else:
-            cpu_speed = 4
-            ball_speed_x = 3
-            ball_speed_y = 3
+            cpu_speed = CPU_SPEED
+            ball_speed_x = BALL_SPEED_X
+            ball_speed_y = BALL_SPEED_Y
 
         paddle = Player(x=SCREEN_WIDTH//2 - 40, y=SCREEN_HEIGHT - 40, width=80, height=10, speed=PLAYER_SPEED)
         cpu = Player(x=SCREEN_WIDTH // 2 - 40, y=40, width=80, height=10, speed=cpu_speed)
